@@ -10,7 +10,7 @@ Which aspects of the MCU (an [STM32L011K4](https://www.st.com/en/microcontroller
 - PWM generation with interruption on Timer 2, PWM at 5 kHz on channel 1 (PA0)
 - Timer 21 used for controlling 6 GPIO's as push-pull outputs upon an interrupt fired every 3.33 ms
 - Five GPIO's as inputs with internal pull-ups for controlling the internal logic managed in Timer 21 interrupt
-- LD3 (green LED) on Nucleo board used as a pulse indication that firmware is running (during some seconds after startup flash is long on / short off then it turns to short on / log off)
+- LD3 (green LED) on Nucleo board used as a pulse indication that firmware is running (during some seconds after startup flash pulse is long *on* / short *off* then it turns to short *on* / long *off*)
 
 
 
