@@ -27,6 +27,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
+#define NO (0)
+#define YES (!NO)
 
 /* USER CODE END TD */
 
@@ -42,17 +44,20 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-uint8_t tsr[2][6][3] = { { { GPIO_PIN_SET, GPIO_PIN_SET, GPIO_PIN_RESET }, {
-    GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_RESET }, { GPIO_PIN_RESET,
-    GPIO_PIN_RESET, GPIO_PIN_RESET }, { GPIO_PIN_RESET, GPIO_PIN_RESET,
-    GPIO_PIN_SET }, { GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_SET }, {
-    GPIO_PIN_SET, GPIO_PIN_SET, GPIO_PIN_SET } },
-    { { GPIO_PIN_SET, GPIO_PIN_SET, GPIO_PIN_RESET }, { GPIO_PIN_RESET,
-        GPIO_PIN_SET, GPIO_PIN_RESET }, { GPIO_PIN_RESET, GPIO_PIN_RESET,
-        GPIO_PIN_RESET }, { GPIO_PIN_RESET, GPIO_PIN_RESET, GPIO_PIN_SET }, {
-        GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET }, { GPIO_PIN_SET,
-        GPIO_PIN_SET, GPIO_PIN_SET } } };
-uint8_t tsrCanChangeDirection[6] = { 1, 0, 1, 1, 0, 1 };
+uint8_t tsr[2][6][3] = { {
+    { GPIO_PIN_SET, GPIO_PIN_SET, GPIO_PIN_RESET }, //   0 -  60
+    { GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_RESET }, //  60 - 120
+    { GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET },   // 120 - 180
+    { GPIO_PIN_RESET, GPIO_PIN_RESET, GPIO_PIN_SET }, // 180 - 240
+    { GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_SET },   // 240 - 300
+    { GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_RESET } }, { // 300 - 360
+    { GPIO_PIN_SET, GPIO_PIN_SET, GPIO_PIN_RESET },  //   0 -  60
+    { GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_RESET },  //  60 - 120
+    { GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_SET },  // 120 - 180
+    { GPIO_PIN_RESET, GPIO_PIN_RESET, GPIO_PIN_SET },  // 180 - 240
+    { GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET },  // 240 - 300
+    { GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_RESET } } }; // 300 - 360
+uint8_t tsrCanChangeDirection[6] = { YES, NO, NO, YES, NO, NO };
 
 static uint8_t tsrDirection = 0; // 0: normal, 1: reversed
 static uint8_t tsrIndex = 0; // from 0 to 5: second index of tsr LUT
@@ -161,7 +166,7 @@ void EXTI0_1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_1_IRQn 0 */
   if(__HAL_GPIO_EXTI_GET_FLAG(PWM_selector_Pin)){
-    htim2.Instance->CCR1 = HAL_GPIO_ReadPin(PWM_selector_GPIO_Port, PWM_selector_Pin) == GPIO_PIN_RESET ? PWM_MIN_COUNT : PWM_MAX_COUNT;
+    REFRESH_PWM_DC
   }
   /* USER CODE END EXTI0_1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);

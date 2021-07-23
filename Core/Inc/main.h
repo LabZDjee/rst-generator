@@ -1,22 +1,22 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.h
+ * @brief          : Header for main.c file.
+ *                   This file contains the common defines of the application.
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -47,8 +47,12 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define PWM_MIN_COUNT 280
-#define PWM_MAX_COUNT 1320
+// MAX PERIOD IS 1,600 (check in .ioc if this hasn't been changed)
+#define PWM_MIN_COUNT (1*160) // 10 % for maximum angle
+#define PWM_MAX_COUNT (8*160) // 80 % for minimum angle
+// Ensures PWM duty cycle follows PWM selector state
+#define REFRESH_PWM_DC \
+		htim2.Instance->CCR1 = HAL_GPIO_ReadPin(PWM_selector_GPIO_Port, PWM_selector_Pin) == GPIO_PIN_RESET ? PWM_MAX_COUNT : PWM_MIN_COUNT;
 /* USER CODE END EM */
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);

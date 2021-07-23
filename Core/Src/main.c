@@ -98,7 +98,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);
   HAL_TIM_Base_Start_IT(&htim21);
-  htim2.Instance->CCR1 = HAL_GPIO_ReadPin(PWM_selector_GPIO_Port, PWM_selector_Pin) == GPIO_PIN_RESET ? PWM_MIN_COUNT : PWM_MAX_COUNT;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,6 +105,7 @@ int main(void)
   uint8_t initialCount = 0;
   uint32_t firstDelayInMs = 850; // first flashes 85/15
   while (1) {
+    REFRESH_PWM_DC
     HAL_IWDG_Refresh(&hiwdg);
     HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
     HAL_Delay(firstDelayInMs);
